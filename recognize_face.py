@@ -2,6 +2,7 @@ import cv2
 from sklearn.neighbors import KNeighborsClassifier
 import pickle
 import numpy as np
+from attendence import mark_attendance
 
 facecascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
@@ -27,6 +28,10 @@ while True:
             fc = frame[b:b + h, a:a + w, :]
             r = cv2.resize(fc, (50, 50)).flatten().reshape(1,-1)
             text = knn.predict(r)
+            name = text[0]
+
+    # Mark attendance
+            mark_attendance(name)
             cv2.putText(frame, text[0], (a, b-10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
             cv2.rectangle(frame, (a, b), (a + w, b + w), (0, 0, 255), 2)
 
